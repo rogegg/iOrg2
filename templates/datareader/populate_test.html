@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Trying show "concept_list":</h1>
+   <h2>name -> {{ object_list.0.name }}</h2>
+    <h2>name -> {{ object_list.0.definition }}</h2>
+    <h5>Populate -> {{ object_list }}</h5>
+
+    <h2>Lista de conceptos</h2>
+    {% for concept in object_list %}
+        <h3>{{ concept. }}</h3>
+        <h3>{{ concept.name }}</h3>
+        <p> - {{ concept.definition }}</p>
+        <br>
+    {% endfor %}
+
+</body>
+</html>

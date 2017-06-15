@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header>
+
+    </header>
+    <main>
+        <h1>Section CONCEPTS: </h1>
+        {% for topic in topic_list %}
+            <h3>{{ topic.name }}</h3>
+            {% for subtopic in topic.subtopics %}
+                {% if topic.name != subtopic.name %}
+                    <p>{{ subtopic.name }}</p>
+                {% endif %}
+                <ul>
+                {% for concept in subtopic.concepts %}
+                    <li><p>{{ concept.name }}</p></li>
+                {% endfor %}
+                </ul>
+            {% endfor %}
+        {% endfor %}
+
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>

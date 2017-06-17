@@ -1,32 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <header>
+    {% extends 'index.html' %}
+    {% block content %}
 
-    </header>
-    <main>
-        <h1>Section CONCEPTS: </h1>
-        {% for topic in topic_list %}
-            <h3>{{ topic.name }}</h3>
-            {% for subtopic in topic.subtopics %}
-                {% if topic.name != subtopic.name %}
-                    <p>{{ subtopic.name }}</p>
-                {% endif %}
-                <ul>
-                {% for concept in subtopic.concepts %}
-                    <li><p>{{ concept.name }}</p></li>
-                {% endfor %}
-                </ul>
+        <h1 class="purple-text darken-4">Temas</h1>
+        <ul class="collapsible concept-list-wrapper" data-collapsible="accordion">
+            {% for topic in topic_list %}
+                <li>
+                    <div class="collapsible-header">{{ topic.name }}</div>
+                    <div class="collapsible-body">
+                        {% for subtopic in topic.subtopics %}
+                            <ul class="collapsible" data-collapsible="accordion">
+                                <li>
+                                    <div class="collapsible-header">{{ subtopic.name }}</div>
+                                    <div class="collapsible-body">
+                                        <div class="row">
+                                        {% for concept in subtopic.concepts %}
+                                           <div class="concept-item">
+                                                <a href="" class="waves-effect waves-light btn">{{ concept.name }}</a>
+                                            </div>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </li>
             {% endfor %}
-        {% endfor %}
+        </ul>
 
-    </main>
-    <footer>
-
-    </footer>
-</body>
-</html>
+    {% endblock content %}

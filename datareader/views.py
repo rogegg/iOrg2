@@ -11,24 +11,7 @@ import datareader
 
 # Create your views here.
 def index(request):
-    #gc = gspread.login('iorgugr@gamil.com', 'i20Org17?')
-
-
-    scope = ['https://spreadsheets.google.com/feeds']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('iOrgTest-5fa50b4936cd.json', scope)
-    # gc = gspread.authorize(httplib2.Http(credentials))
-
-    gc = gspread.authorize(credentials)
-    sh = gc.open("iOrg2.0")
-    wks = sh.get_worksheet(2)
-    value = wks.acell('A2').value # valor de la celda A2
-    title = wks.cell(1,7).value
-    value = wks.cell(2, 7).value # valor de la celda con posición fila 2 y columna 1
-    # wks.update_acell('B2', 'Im your server') # Necesitamos dar permisos de edición a estos credenciales.
-
-
-    code = "<html><body> <h2>"+title+"</h2><br><p>" +value+ "</p> </body></html>"
-    return HttpResponse(code)
+    return render(request,'index.html')
 
 
 def concept(request):
@@ -46,10 +29,6 @@ def concept(request):
                 "name" : SubTopic.objects.filter(topic=Topic.objects.all()[i])[j].name,
                 "concepts" : Concept.objects.filter(subtopic=SubTopic.objects.filter(topic=Topic.objects.all()[i])[j])
             })
-
-
-
-
 
     context = {
         'topic_list' : topic_list

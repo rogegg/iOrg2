@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/
+</head>
+<body>
+    <header>
+        <nav class="">
+            <div class="nav-wrapper">
+                <div class="row">
+                    <div class="col"><a href="#">Logo</a></div>
+
+                    <ul class="right">
+                        <li><a href="#">Menu1</a></li>
+                        <li><a href="#">Menu2</a></li>
+                        <li><a href="#">Menu3</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+        <ul class="lateral-nav-wrapper side-nav fixed">
+            <li><a href="{% url 'concept' %}" class="">Conceptos</a></li>
+            <li><a href="{% url 'index' %}" class="">Autoevaluación</a></li>
+            <li><a href="{% url 'index' %}" class="">Hexágono</a></li>
+            <li><a href="{% url 'index' %}" class="">Examen</a></li>
+        </ul>
+
+    <main class="main-container">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+</body>
+</html>

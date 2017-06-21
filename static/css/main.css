@@ -1,0 +1,13 @@
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+header,
+main,
+footer {
+  padding-left: 200px;
+}
+.lateral-nav-wrapper {
+  width: 200px;
+}

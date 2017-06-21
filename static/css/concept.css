@@ -1,0 +1,8 @@
+.concept-item {
+  position: relative;
+  display: inline-block;
+  margin: 10px 10px 0 0;
+}
+.concept-popup-description {
+  padding-left: 20px;
+}

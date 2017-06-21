@@ -8,6 +8,8 @@ command-not-found==0.3
 cryptography==1.2.3
 defer==1.0.6
 Django==1.11.2
+django-appconf==1.0.2
+django-compressor==2.1.1
 djangotoolbox==1.8.0
 feedparser==5.1.3
 google-api-python-client==1.6.2
@@ -44,8 +46,10 @@ python-debian==0.1.27
 python-systemd==231
 pytz==2017.2
 pyxdg==0.25
+rcssmin==1.0.6
 reportlab==3.3.0
 requests==2.9.1
+rjsmin==1.0.12
 rsa==3.4.2
 sessioninstaller==0.0.0
 six==1.10.0

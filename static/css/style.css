@@ -1,23 +1,29 @@
-*,*:after,*:before{
-    box-sizing: border-box;
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
 }
-header,main,footer{
-    padding-left: 200px;;
+header,
+main,
+footer {
+  padding-left: 200px;
 }
-.lateral-nav-wrapper{
-    width: 200px;
+.lateral-nav-wrapper {
+  width: 200px;
 }
-.main-container .concept-list-wrapper .concept-item{
-    position: relative;
-    display: inline-block;
-    margin-bottom: 10px;
+.concept-item {
+  position: relative;
+  display: inline-block;
+  margin: 10px 10px 0 0;
 }
-
-
-
+.concept-popup-description {
+  padding-left: 20px;
+}
 /*Reajustamos Padding de la estructura genreal*/
-@media only screen and (max-width: 992px){
-    header,main,footer{
-        padding-left: 0;
-    }
+@media only screen and (max-width: 992px) {
+  header,
+  main,
+  footer {
+    padding-left: 0;
+  }
 }

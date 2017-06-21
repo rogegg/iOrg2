@@ -1,31 +1,52 @@
     {% extends 'index.html' %}
     {% block content %}
 
-        <h1 class="purple-text darken-4">Temas</h1>
-        <ul class="collapsible concept-list-wrapper" data-collapsible="accordion">
-            {% for topic in topic_list %}
-                <li>
-                    <div class="collapsible-header">{{ topic.name }}</div>
-                    <div class="collapsible-body">
-                        {% for subtopic in topic.subtopics %}
-                            <ul class="collapsible" data-collapsible="accordion">
-                                <li>
-                                    <div class="collapsible-header">{{ subtopic.name }}</div>
-                                    <div class="collapsible-body">
-                                        <div class="row">
-                                        {% for concept in subtopic.concepts %}
-                                           <div class="concept-item">
-                                                <a href="" class="waves-effect waves-light btn">{{ concept.name }}</a>
+    <h1 class="blue-text darken-4">Temas</h1>
+    <ul class="collapsible concept-list-wrapper" data-collapsible="accordion">
+    {% for topic in topic_list %}
+        <li>
+            <div class="collapsible-header">{{ topic.name }}</div>
+            <div class="collapsible-body">
+            {% for subtopic in topic.subtopics %}
+                {% if topic.name != subtopic.name %}
+                    <ul class="collapsible" data-collapsible="accordion">
+                    <li>
+                        <div class="collapsible-header">{{ subtopic.name }}</div>
+                        <div class="collapsible-body">
+                {% endif %}
+{#                            <div class="row">#}
+                        {% for concept in subtopic.concepts %}
+                           <div class="concept-item">
+                               <a href="#modal{{ concept.id }}" class="waves-effect waves-light btn">{{ concept.name }}</a>
+                                <div id="modal{{ concept.id }}" class="modal concept-popup-container">
+                                    <div class="modal-content concept-popup">
+                                        <h4 class="concept-popup-title blue-text center-align">{{ concept.name }}</h4>
+                                        <h5 class="concept-popup-subtitle blue-text text-lighten-3">Definición:</h5>
+                                        <p class="concept-popup-description">{{ concept.definition }}</p>
+                                        <h5 class="concept-popup-subtitle blue-text text-lighten-3">Ejemplo:</h5>
+                                        <div class="concept-popup-description">{{ concept.example }}</div>
+                                        {% if concept.url_image %}
+                                            <div class="row center-align">
+                                                <img src="{{ concept.url_image }}" alt="imagen de concepto" class="center-align">
                                             </div>
-                                        {% endfor %}
-                                        </div>
+                                        {% endif %}
                                     </div>
-                                </li>
-                            </ul>
+                                    <div class="modal-footer">
+                                        <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Salir</a>
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
-                    </div>
-                </li>
+{#                            </div>#}
+                {% if topic.name != subtopic.name %}
+                        </div>
+                    </li>
+                    </ul>
+                {% endif %}
             {% endfor %}
-        </ul>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
 
     {% endblock content %}

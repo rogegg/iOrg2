@@ -28,6 +28,7 @@ def concept(request):
             topic_list[i]["subtopics"].append({
                 "name" : SubTopic.objects.filter(topic=Topic.objects.all()[i])[j].name,
                 "concepts" : Concept.objects.filter(subtopic=SubTopic.objects.filter(topic=Topic.objects.all()[i])[j])
+
             })
 
     context = {

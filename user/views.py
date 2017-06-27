@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -40,6 +40,10 @@ def signup(request):
 
             # Save new user attributes
             user.save()
+
+            #Add to group
+            g = Group.objects.get(name='student')
+            g.user_set.add(user)
 
             return HttpResponseRedirect(reverse('index'))  # Redirect after POST
     else:

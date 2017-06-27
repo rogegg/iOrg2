@@ -12,6 +12,6 @@ urlpatterns = [
     url(r'^login$',   authViews.login, {'template_name': 'user/login.html',}, name='login'),
     url(r'^logout$',  authViews.logout, {'next_page': 'login'}, name="logout"),
     # url(r'^logout$',  views.logout, name='logout'),
-    url(r'^concept$', datareader.views.concept, name='concept'),
+    # url(r'^concept$', datareader.views.concept, name='concept'),
 ]
 

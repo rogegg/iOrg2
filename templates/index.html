@@ -23,10 +23,12 @@
                     <div class="col"><a href="#">Logo</a></div>
 
                     <ul class="right">
+                    {% if perms.datareader.add_concept %}
                         <li><a href="#"><i class="material-icons left">supervisor_account</i>Admin site</a></li>
-                        <li><a href="#"><i class="material-icons left">edit</i>Profile</a></li>
+                    {% endif %}
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'logout' %}"><i class="material-icons left">edit</i>Logout</a></li>
+                        <li><a href="#"><i class="material-icons left">edit</i>Profile</a></li>
+                        <li><a href="{% url 'logout' %}"><i class="material-icons left">power_settings_new</i>Logout</a></li>
                     {% endif %}
                     </ul>
                 </div>

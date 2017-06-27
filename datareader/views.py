@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
+from django.contrib.auth.decorators import login_required
 from django.db import models, migrations
 
 import gspread
@@ -14,6 +15,7 @@ def index(request):
     return render(request,'index.html')
 
 
+@login_required()
 def concept(request):
 
     topic_list = []

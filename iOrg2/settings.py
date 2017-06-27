@@ -25,7 +25,7 @@ SECRET_KEY = '07660ms4(*o7wz7wiw-kgshj7ik4gj2wt5(ncmntuj@v8+r1rn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.0','0.0.0.0','192.168.0.193']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # 'compressor',
     #my apps
     'datareader.apps.DatareaderConfig',
+    'user.apps.UserConfig',
 ]
 
 
@@ -127,4 +128,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+
+
+# Redirect when login is correct.
+LOGIN_REDIRECT_URL = "/datareader/concept"
+# Redirect when login is not correct.
+LOGIN_URL = '/datareader'
 

@@ -23,15 +23,16 @@
                     <div class="col"><a href="#">Logo</a></div>
 
                     <ul class="right">
-                        <li><a href="#">Menu1</a></li>
-                        <li><a href="#">Menu2</a></li>
-                        <li><a href="#">Menu3</a></li>
+                        <li><a href="#"><i class="material-icons left">supervisor_account</i>Admin site</a></li>
+                        <li><a href="#"><i class="material-icons left">edit</i>Profile</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}"><i class="material-icons left">edit</i>Logout</a></li>
+                    {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-
 
         <ul id="nav-mobile" class="lateral-nav-wrapper side-nav fixed">
             <li><a href="{% url 'concept' %}" class="">Conceptos</a></li>
@@ -43,6 +44,12 @@
     <main class="main-container">
         <div class="container">
             {% block content %}
+                {% if user.is_authenticated %}
+                    <p>Welcome {{ user.username }}</p>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'signup' %}">Register</a>
+                {% endif %}
             {% endblock %}
         </div>
     </main>

@@ -49,7 +49,7 @@ def populate_test(request):
     # context = {'object_list': a}
     # context = {'object_list': concept_list}
 
-    populate = populate_models()
+    populate = populate_concept_page()
 
     # populate = Concept.objects.get(name="Primer concepto")
     all_concepts = Concept.objects.all()

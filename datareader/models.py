@@ -83,8 +83,9 @@ def populate_concept_page():
         "name": "",
         "concepts": []
     }
-    n_concepts = 76 #número de conceptos en el documento de drive
-
+    # n_concepts = 76 #número de conceptos en el documento de drive
+    n_concepts = rows_count(wks,COLUMN["name"])
+    print("NUMERO DE FILAS = ", n_concepts)
     tmp_topic = ""
     tmp_subtopic = ""
     concept_list = []
@@ -157,7 +158,16 @@ def populate_concept_page():
 
 
     # # Creamos en la base de datos los temas.
-    Concept.objects.all().delete()
+    Concept.objects.all().delete()    # Topic.objects.all().delete()
+
+    # Conectamos con la plantilla de Google Drive
+    scope = ['https://spreadsheets.google.com/feeds']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('iOrgTest-5fa50b4936cd.json', scope)
+    gc = gspread.authorize(credentials)
+    sh = gc.open("iOrg2.0")
+
+    wks = sh.get_worksheet(2)
+
     SubTopic.objects.all().delete()
     Topic.objects.all().delete()
 
@@ -178,3 +188,37 @@ def populate_concept_page():
                 )
 
     return topic_list
+
+
+def try_gspread():
+    # Topic.objects.all().delete()
+
+    # Conectamos con la plantilla de Google Drive
+    scope = ['https://spreadsheets.google.com/feeds']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('iOrgTest-5fa50b4936cd.json', scope)
+    gc = gspread.authorize(credentials)
+    sh = gc.open("iOrg2.0")
+
+    wks = sh.get_worksheet(2)
+
+    # x = wks.row_count()
+    # print( "Número de filas = ",x)
+
+    return wks
+
+#Método que devuelve el número de filas con contenido de una columna
+#Parámetros:
+# - wks -> hoja de gspread
+# - col -> columna sobre la que se van a calcular las filas
+def rows_count(wks,col):
+    x = 0
+
+    list = wks.col_values(col)
+
+    for row in list:
+        if(row==''):
+            break
+        else:
+            x=x+1
+
+    return x

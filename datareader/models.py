@@ -2,7 +2,6 @@ from collections import OrderedDict
 from itertools import repeat
 
 from django.db import models
-
 import gspread
 import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
@@ -16,6 +15,7 @@ COLUMN = {
     "example" :    8,
     "url_image" :  9,
 }
+
 
 # Create your models here.
 class Menu(models.Model):
@@ -33,16 +33,9 @@ class Topic(models.Model):
     name = models.CharField(max_length=100)
 
 
-
-
-
-
-
-
 class SubTopic(models.Model):
     name = models.CharField(max_length=100)
     topic = models.ForeignKey(Topic, null=False, on_delete=models.CASCADE)
-
 
 
 class Concept(models.Model):
@@ -52,13 +45,30 @@ class Concept(models.Model):
     url_image = models.CharField(max_length=200)
     subtopic = models.ForeignKey(SubTopic, null=False, on_delete=models.CASCADE)
 
-    def get_all():
+    def get_all(self):
         return Concept.objects.all()
 
     def filter_by_subtopic(subtopic_filter):
         return Concept.objects.filter(subtopic=subtopic_filter)
 
 
+class Question(models.Model):
+    name = models.CharField(max_length=300)
+    answer = models.CharField(max_length=300)
+    options = models.CharField(max_length=300)
+    reason = models.CharField(max_length=300)
+    topic = models.ForeignKey(Topic, null=False, on_delete=models.CASCADE)
+
+    def get_all(self):
+        return Question.objects.all()
+
+    def filter_by_topic(str):
+        try:
+            topic = Topic.objects.get(name=str)
+        except Topic.DoesNotExist:
+            return None
+
+        return Question.objects.filter(topic=topic)
 
 
 # Rellenamos nuestra base de datos con los datos de la hoja Conceptos de Drive
@@ -157,8 +167,6 @@ def populate_concept_page():
         # topic_list[-1]["subtopics"] = subtopic_list
 
 
-    # # Creamos en la base de datos los temas.
-    Concept.objects.all().delete()    # Topic.objects.all().delete()
 
     # Conectamos con la plantilla de Google Drive
     scope = ['https://spreadsheets.google.com/feeds']
@@ -168,6 +176,8 @@ def populate_concept_page():
 
     wks = sh.get_worksheet(2)
 
+    # # Creamos en la base de datos los temas.
+    Concept.objects.all().delete()    # Topic.objects.all().delete()
     SubTopic.objects.all().delete()
     Topic.objects.all().delete()
 
@@ -199,12 +209,14 @@ def try_gspread():
     gc = gspread.authorize(credentials)
     sh = gc.open("iOrg2.0")
 
-    wks = sh.get_worksheet(2)
+    wks = sh.get_worksheet(3)
 
     # x = wks.row_count()
     # print( "Número de filas = ",x)
 
     return wks
+
+
 
 #Método que devuelve el número de filas con contenido de una columna
 #Parámetros:
@@ -222,3 +234,52 @@ def rows_count(wks,col):
             x=x+1
 
     return x
+
+
+
+def populate_questionsVF():
+
+    # Conectamos con la plantilla de Google Drive
+    scope = ['https://spreadsheets.google.com/feeds']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('iOrgTest-5fa50b4936cd.json', scope)
+    gc = gspread.authorize(credentials)
+    sh = gc.open("iOrg2.0")
+
+    wks = sh.get_worksheet(3)
+
+    n_questions = rows_count(wks,3)
+    question = {}
+
+    Question.objects.all().delete()
+
+    for i in range(2,n_questions+1):
+        question = get_questionVF_of_row(wks,i)
+        try:
+            topic = Topic.objects.get(name=question["topic"])
+        except Topic.DoesNotExist:
+            print("Tema nuevo -> ", question["topic"])
+            topic = Topic.objects.create(name=question["topic"])
+
+        Question.objects.create(
+            name = question["statement"],
+            answer = question["result"],
+            options = question["options"],
+            reason = question["reason"],
+            topic = topic,
+        )
+        print("PREGUNTA [",i,"] creada")
+
+
+
+def get_questionVF_of_row(wks,row_number):
+    question = {}
+
+    row = wks.row_values(row_number)
+
+    question["topic"] = row[3]
+    question["statement"] = row[4]
+    question["options"] = row[5]
+    question["result"] = row[6]
+    question["reason"] = row[7]
+
+    return question

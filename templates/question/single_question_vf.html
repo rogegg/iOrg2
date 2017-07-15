@@ -1,0 +1,14 @@
+
+
+    {% extends 'index.html' %}
+    {% block content %}
+
+    <h2 class="blue-text">{{ topic }}</h2>
+
+    <p> -- {{ question.name }}</p>
+    <p> -- {{ question.options }}</p>
+    <p> -- {{ question.answer }}</p>
+    <p> -- {{ question.reason }}</p>
+
+
+    {% endblock content %}

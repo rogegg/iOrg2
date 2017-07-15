@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # 'compressor',
     #my apps
     'datareader.apps.DatareaderConfig',
+    'question.apps.QuestionConfig',
     'user.apps.UserConfig',
 ]
 
@@ -73,6 +74,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'iOrg2.wsgi.application'
 

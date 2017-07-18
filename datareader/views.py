@@ -58,3 +58,6 @@ def populate_test(request):
 
     #return HttpResponse("<p>HEEEEEEEEEEEE</p>")
     return render(request, 'datareader/populate_test.html', context)
+
+def auto_evaluacion(request):
+    return render(request, 'autoevaluacion.html')

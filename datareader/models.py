@@ -70,6 +70,15 @@ class Question(models.Model):
 
         return Question.objects.filter(topic=topic)
 
+    def get_option_list(self):
+        return [option.strip() for option in self.options.split(";")]
+
+    def get_type(self):
+        options = self.get_option_list()
+        if (options[0] == "V" or options[0] == "F"):
+            return "true_false"
+        return "multiple_options"
+
 
 # Rellenamos nuestra base de datos con los datos de la hoja Conceptos de Drive
 def populate_concept_page():

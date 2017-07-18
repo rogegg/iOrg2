@@ -1,0 +1,20 @@
+
+
+    {% extends 'index.html' %}
+    {% block content %}
+        <br>
+        <h5> {{ question.name }} </h5>
+        {% if response %}
+           <h4>Respuesta Correcta</h4>
+        {% else %}
+            <h4>Respuesta Incorrecta</h4>
+        {% endif %}
+         {% if question.reason != "" %}
+            <h5>Explicación:</h5>
+            <p>{{ question.reason }}</p>
+        {% endif %}
+        <br>
+        <a href="{{ request.get_full_path }}" class="waves-effect waves-light btn">Siguiente Pregunta</a>
+        <br>
+        <a href="{% url 'vf' %}" class="waves-effect waves-light btn">Lita temas</a>
+    {% endblock content %}

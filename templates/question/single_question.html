@@ -6,17 +6,8 @@
     <h2 class="blue-text">{{ topic }}</h2>
 
     <p> -- {{ question.name }}</p>
-    {% for option in question_options %}
-        {% if option.name == "V" %}
-            <p>---- Verdadero</p>
-        {% elif option.name == "F" %}
-            <p>---- Falso</p>
-        {% else %}
-            <p>---- ||{{ option.name }}</p>
-        {% endif %}
-    {% endfor %}
-    <p> -- {{ question.answer }}</p>
-    <p> -- {{ question.reason }}</p>
+{#    <p> -- {{ question.answer }}</p>#}
+{#    <p> -- {{ question.reason }}</p>#}
     <form action="{{ request.get_full_path }}" method="post" class="iorg-form">{% csrf_token %}
         <input type='hidden' name="question" value="{{ question.name }}" />
         {% for option in question_options %}

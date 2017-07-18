@@ -26,21 +26,41 @@ def questions_vf(request):
         })
 
     context = {
-        'topic_list' : topic_list_context
+        'topic_list' : topic_list_context,
+        "type": "vf",
     }
-
-    return render(request, 'question/questions_vf.html', context)
+    return render(request, 'question/questions.html', context)
 
 @login_required()
-def single_question_vf(request):
+def questions_opm(request):
 
+    topic_list = list(Topic.objects.all())
+    topic_list_context = []
+
+    for topic in topic_list:
+        topic_list_context.append({
+            "name": topic.name,
+            "questions": list(Question.filter_by_topic(topic.name)),
+
+        })
+
+    context = {
+        'topic_list' : topic_list_context,
+        "type": "opm",
+    }
+    return render(request, 'question/questions.html', context)
+
+
+@login_required()
+def single_question(request):
     if request.GET.get('topic'):
         topic = request.GET.get('topic', '')
+        type  = request.GET.get('type', '')
     else:
         return (questions_vf(request))
 
     #Preguntas VF con tema "topic"
-    question_list = list(Question.filter_by_topic(topic))
+    question_list = list(Question.filter_by_topic(topic).filter(type=type))
     question = random.choice(question_list)
     question_options = question.get_option_list()
     i=0
@@ -61,6 +81,7 @@ def single_question_vf(request):
         context_response = {
             "question": question,
             "response": response,
+            "type": type,
         }
         return render(request, 'question/question_response.html', context_response)
 
@@ -70,7 +91,7 @@ def single_question_vf(request):
         'question_options' : new_list,
         'form' : AnswerForm(),
     }
-    return render(request,  'question/single_question_vf.html', context)
+    return render(request,  'question/single_question.html', context)
 
 
 def question_response(request):

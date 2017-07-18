@@ -16,5 +16,9 @@
         <br>
         <a href="{{ request.get_full_path }}" class="waves-effect waves-light btn">Siguiente Pregunta</a>
         <br>
-        <a href="{% url 'vf' %}" class="waves-effect waves-light btn">Lita temas</a>
+        {% if type == "vf" %}
+            <a href="{% url 'vf' %}" class="waves-effect waves-light btn">Lista temas</a>
+        {% else %}
+            <a href="{% url 'opm' %}" class="waves-effect waves-light btn">Lista temas</a>
+        {% endif %}
     {% endblock content %}

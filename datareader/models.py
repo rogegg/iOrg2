@@ -58,6 +58,12 @@ class Question(models.Model):
     options = models.CharField(max_length=300)
     reason = models.CharField(max_length=300)
     topic = models.ForeignKey(Topic, null=False, on_delete=models.CASCADE)
+    type_choices = (("vf","verdadero falso"),("opm","opcion multiple"))
+    type = models.CharField(
+        max_length=2,
+        choices=type_choices,
+        default="vf"
+    )
 
     def get_all(self):
         return Question.objects.all()
@@ -78,6 +84,8 @@ class Question(models.Model):
         if (options[0] == "V" or options[0] == "F"):
             return "true_false"
         return "multiple_options"
+
+
 
 
 # Rellenamos nuestra base de datos con los datos de la hoja Conceptos de Drive
@@ -244,22 +252,27 @@ def rows_count(wks,col):
 
     return x
 
-
-
-def populate_questionsVF():
+def populate_questions(type="vf"):
 
     # Conectamos con la plantilla de Google Drive
     scope = ['https://spreadsheets.google.com/feeds']
     credentials = ServiceAccountCredentials.from_json_keyfile_name('iOrgTest-5fa50b4936cd.json', scope)
     gc = gspread.authorize(credentials)
     sh = gc.open("iOrg2.0")
+    #La página 3 corresponde a las preguntas Verdadero Falso
+    #La página 4 corresponde a las preguntas tipo test con 4 opciones.
+    page = 3
+    if type == "vf":
+        page = 3
+        Question.objects.filter(type="vf").delete()
+    else:
+        page = 4
+        Question.objects.filter(type="opm").delete()
 
-    wks = sh.get_worksheet(3)
+    wks = sh.get_worksheet(page)
 
     n_questions = rows_count(wks,3)
     question = {}
-
-    Question.objects.all().delete()
 
     for i in range(2,n_questions+1):
         question = get_questionVF_of_row(wks,i)
@@ -269,15 +282,29 @@ def populate_questionsVF():
             print("Tema nuevo -> ", question["topic"])
             topic = Topic.objects.create(name=question["topic"])
 
-        Question.objects.create(
-            name = question["statement"],
-            answer = question["result"],
-            options = question["options"],
-            reason = question["reason"],
-            topic = topic,
-        )
+        if(type=="vf"):
+            Question.objects.create(
+                name = question["statement"],
+                answer = question["result"],
+                options = question["options"],
+                reason = question["reason"],
+                topic = topic,
+                type = "vf",
+            )
+        else:
+            Question.objects.create(
+                name=question["statement"],
+                answer=question["result"],
+                options=question["options"],
+                reason=question["reason"],
+                topic=topic,
+                type="opm",
+            )
         print("PREGUNTA [",i,"] creada")
 
+
+def populate_questions_opm():
+    populate_questions("opm")
 
 
 def get_questionVF_of_row(wks,row_number):

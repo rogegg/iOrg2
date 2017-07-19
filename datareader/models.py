@@ -310,7 +310,6 @@ def populate_questions_opm():
 
 def get_questionVF_of_row(wks,row_number):
     question = {}
-
     row = wks.row_values(row_number)
 
     question["topic"] = row[3]

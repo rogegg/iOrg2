@@ -1,0 +1,70 @@
+    {% extends 'index.html' %}
+    {% block content %}
+        <div class="admin-site-container">
+            <div class="settings-button-container">
+                <a href="{% url 'update_concepts' %}" class="btn">Actualizar Conceptos</a>
+                {% if status_concepts %}
+                    <p class="button-description active"> Conceptos actualizados.</p>
+                {% else %}
+                    <div class="button-description">
+                        <p> Actualizando conceptos.</p>
+                        <div class="preloader-wrapper small active">
+                          <div class="spinner-layer spinner-red-only">
+                            <div class="circle-clipper left">
+                              <div class="circle"></div>
+                            </div><div class="gap-patch">
+                              <div class="circle"></div>
+                            </div><div class="circle-clipper right">
+                              <div class="circle"></div>
+                            </div>
+                           </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="settings-button-container">
+                <a href="{% url 'update_questions_vf' %}" class="btn">Actualizar Preguntas VF</a>
+                {% if status_questions_vf %}
+                    <p class="button-description active"> Preguntas VF actualizadas.</p>
+                {% else %}
+                    <div class="button-description">
+                        <p>Actualizando preguntas VF.</p>
+                        <div class="preloader-wrapper small active">
+                          <div class="spinner-layer spinner-red-only">
+                            <div class="circle-clipper left">
+                              <div class="circle"></div>
+                            </div><div class="gap-patch">
+                              <div class="circle"></div>
+                            </div><div class="circle-clipper right">
+                              <div class="circle"></div>
+                            </div>
+                           </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="settings-button-container">
+                <a href="{% url 'update_questions_opm' %}" class="btn">Actualizar Preguntas Opción Múltiple</a>
+                {% if status_questions_opm %}
+                    <p class="button-description active"> Preguntas de opción múltiple actualizadas.</p>
+                {% else %}
+                    <div class="button-description">
+                        <p>Actualizando preguntas de opción múltiple.</p>
+                        <div class="preloader-wrapper small active">
+                          <div class="spinner-layer spinner-red-only">
+                            <div class="circle-clipper left">
+                              <div class="circle"></div>
+                            </div><div class="gap-patch">
+                              <div class="circle"></div>
+                            </div><div class="circle-clipper right">
+                              <div class="circle"></div>
+                            </div>
+                           </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+
+    {% endblock content %}

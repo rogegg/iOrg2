@@ -24,7 +24,7 @@
 
                     <ul class="right">
                     {% if perms.datareader.add_concept %}
-                        <li><a href="#"><i class="material-icons left">supervisor_account</i>Admin site</a></li>
+                        <li><a href="{% url 'admin_site' %}"><i class="material-icons left">supervisor_account</i>Admin site</a></li>
                     {% endif %}
                     {% if user.is_authenticated %}
                         <li><a href="#"><i class="material-icons left">edit</i>Profile</a></li>

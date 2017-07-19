@@ -1,14 +1,20 @@
 from django.shortcuts import render
+from django.contrib.auth.models import Permission,User, Group
+
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.db import models, migrations
+from django.shortcuts import redirect
+
 
 import gspread
 import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
 from datareader import models
 import datareader
+
+LOCK = False #Variable cerrojo
 
 # Create your views here.
 def index(request):
@@ -59,5 +65,47 @@ def populate_test(request):
     #return HttpResponse("<p>HEEEEEEEEEEEE</p>")
     return render(request, 'datareader/populate_test.html', context)
 
+@login_required()
 def auto_evaluacion(request):
     return render(request, 'autoevaluacion.html')
+
+
+@login_required()
+def admin_site(request):
+    return render(request, 'user/admin_site.html')
+
+
+@login_required()
+def update_concepts(request):
+    global LOCK
+    if not LOCK:
+        LOCK = True
+        populate_concept_page()
+        LOCK = False
+    return render(request, 'user/admin_site.html',{"status_concepts":True})
+
+
+@login_required()
+def update_questions_vf(request):
+    global LOCK
+    if not LOCK:
+        LOCK = True
+        populate_questions("vf")
+        LOCK = False
+    return render(request, 'user/admin_site.html',{"status_questions_vf":True})
+
+
+@login_required()
+def update_questions_opm(request):
+    user = request.user
+    permission_len = len(Permission.objects.filter(user=user).filter(codename="add_concept"))
+    if permission_len>0:
+        global LOCK
+        if not LOCK:
+            LOCK = True
+            populate_questions_opm()
+            LOCK = False
+        return render(request, 'user/admin_site.html',{"status_questions_opm":True})
+    else:
+        return redirect('index')
+

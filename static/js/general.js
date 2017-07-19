@@ -1,11 +1,13 @@
 /**
  * Created by roge on 21/06/17.
  */
-
+var LOCK = false
 
 $(document).ready(function(){
 
     iniMaterializeJs();
+    
+    bindEvents();
 });
 
 /**
@@ -21,6 +23,17 @@ function iniMaterializeJs(){
     //Fixed inputs materializecss
     fixedInputsMaterializecss();
 }
+
+
+/**
+ * Bind general events
+ */
+function bindEvents() {
+    $('.settings-button-container a').click(function(event){
+        $(event.currentTarget).parent().find('.button-description').addClass("active");
+    })
+}
+
 /**
  * Fix the inputs inside a label of django.
  * put inputs outside the label.
@@ -34,3 +47,6 @@ function fixedInputsMaterializecss(){
 
     }
 }
+
+
+

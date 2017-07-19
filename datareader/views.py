@@ -21,7 +21,7 @@ def concept(request):
     topic_list = []
 
     #creamos los datos necesarios para la plantilla html
-    for i in range(0,len(Topic.objects.all())) :
+    for i in range(0,len(Topic.objects.all())):
         topic_list.append({
             "name" : Topic.objects.all()[i].name,
             "subtopics" : []

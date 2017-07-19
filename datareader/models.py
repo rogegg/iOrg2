@@ -4,6 +4,7 @@ from itertools import repeat
 from django.db import models
 import gspread
 import httplib2
+from time import time
 from oauth2client.service_account import ServiceAccountCredentials
 
 
@@ -89,7 +90,7 @@ class Question(models.Model):
 
 
 # Rellenamos nuestra base de datos con los datos de la hoja Conceptos de Drive
-def populate_concept_page():
+def populate_concept_page_old():
     # Topic.objects.all().delete()
 
     # Conectamos con la plantilla de Google Drive
@@ -319,3 +320,53 @@ def get_questionVF_of_row(wks,row_number):
     question["reason"] = row[7]
 
     return question
+
+def populate_concept_page():
+    # Conectamos con la plantilla de Google Drive
+    scope = ['https://spreadsheets.google.com/feeds']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('iOrgTest-5fa50b4936cd.json', scope)
+    gc = gspread.authorize(credentials)
+    sh = gc.open("iOrg2.0")
+    wks = sh.get_worksheet(2)
+
+    n_concepts = rows_count(wks, 3)
+    #Eliminamos todos los conceptos para volver a crearlos.
+    Concept.objects.all().delete()
+    concept = {}
+    time_ini = time()
+    for i in range(2, n_concepts + 1):
+        concept = get_concept_of_row(wks,i)
+
+        try:
+            subtopic = SubTopic.objects.get(name=concept["subtopic"])
+        except SubTopic.DoesNotExist:
+            try:
+                topic = Topic.objects.get(name=concept["topic"])
+            except Topic.DoesNotExist:
+                print("Tema nuevo -> ", concept["topic"])
+                topic = Topic.objects.create(name=concept["topic"])
+
+            print(" - - - Subtema nuevo -> ", concept["subtopic"])
+            subtopic = SubTopic.objects.create(name=concept["subtopic"],topic=topic)
+
+        Concept.objects.create(
+            name= concept["name"],
+            definition= concept["definition"],
+            example= concept["example"],
+            url_image= concept["url_image"],
+            subtopic= subtopic,
+        )
+        print("Iteración: [",i,"] tiempo: ", time() - time_ini)
+
+
+def get_concept_of_row(wks,row_number):
+    concept = {}
+    row = wks.row_values(row_number)
+    concept["topic"] = row[3]
+    concept["subtopic"] = row[4]
+    concept["name"] = row[5]
+    concept["definition"] = row[6]
+    concept["example"] = row[7]
+    concept["url_image"] = row[8]
+
+    return concept

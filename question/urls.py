@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'vf/single/$', views.single_question, name='vf_single'),
     url(r'opm/single/$', views.single_question, name='opm_single'),
     url(r'vf/question_response$', views.question_response, name='question_response'),
+    url(r'exam_type', views.exam_type, name='exam_type'),
     url(r'vf/exam', views.exam_vf, name='exam_vf'),
 ]
 

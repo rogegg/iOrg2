@@ -11,6 +11,15 @@ footer {
 .lateral-nav-wrapper {
   width: 200px;
 }
+.lateral-nav-wrapper .logo-container {
+  height: 64px;
+  min-height: 64px;
+  padding: 5px;
+}
+.lateral-nav-wrapper .logo-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
 .admin-site-container .settings-button-container .button-description {
   opacity: 0;
 }

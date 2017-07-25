@@ -20,7 +20,6 @@
             <div class="nav-wrapper blue">
                 <div class="row">
                     <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-                    <div class="col"><a href="#">Logo</a></div>
 
                     <ul class="right">
                     {% if perms.datareader.add_concept %}
@@ -37,10 +36,15 @@
     </header>
 
         <ul id="nav-mobile" class="lateral-nav-wrapper side-nav fixed">
+            <li class="logo-container">
+                <a href="{% url 'index' %}" class="center-align inline">
+                    <img src="{% static 'assets/logo_iOrg.png' %}" alt="logo_iorg" class="center-align">
+                </a>
+            </li>
             <li><a href="{% url 'concept' %}" class="">Conceptos</a></li>
             <li><a href="{% url 'autoevaluacion' %}" class="">Autoevaluación</a></li>
             <li><a href="{% url 'index' %}" class="">Hexágono</a></li>
-            <li><a href="{% url 'exam_vf' %}" class="">Examen</a></li>
+            <li><a href="{% url 'exam_type' %}" class="">Examen</a></li>
         </ul>
 
     <main class="main-container">

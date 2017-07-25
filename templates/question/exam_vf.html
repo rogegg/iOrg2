@@ -31,28 +31,31 @@
 
 
         {% if response_list %}
-            <a href="{% url 'exam_vf' %}" class="">Siguiente Examen</a>
+            <br>
+            <a href="{% url 'exam_vf' %}" class="btn">Siguiente Examen</a>
             <br>
             <h3>Total score:</h3>
             <p>Respuestas correctas: {{ total_score.count_ok }}</p>
             <p>Respuestas incorrectas: {{ total_score.count_error }}</p>
             <p>Sin respuesta: {{ total_score.count_no_response }}</p>
-            <p>Puntuación total: {{ total_score.score }}</p>
+            <p>Puntuación total: {{ total_score.score }} sobre 10</p>
 
             {% for response in response_list %}
                 <h3 class="blue-text">Pregunta {{ forloop.counter }}:</h3>
                 <p>{{ response.question.name }}</p>
-                <p>elegida: {{ response.option_selected }} <-------> correcta: {{ response.question.answer }}</p>
                 {% if response.option_selected == response.question.answer %}
                     <p class="green-text">Opción elegida : {{ response.option_selected }}</p>
                     <p>¡Respuesta correcta!</p>
-                    <p class="green">Puntuación: {{ response.score }}</p>
                 {% else %}
-                    <p class="red-text">Opción elegida : {{ response.option_selected }}</p>
+                    {% if response.option_selected == None %}
+                        <p class="red-text">Opción elegida : No seleccionada</p>
+                    {% else %}
+                        <p class="red-text">Opción elegida : {{ response.option_selected }}</p>
+                    {% endif %}
+
                     <p>Respuesta incorrecta, opción correcta: {{ response.question.answer }}</p>
-                    <p class="red">Puntuación: {{ response.score }}</p>
                 {% endif %}
             {% endfor %}
-            <a href="{% url 'exam_vf' %}" class="">Siguiente Examen</a>
+            <a href="{% url 'exam_vf' %}" class="btn">Siguiente Examen</a>
         {% endif %}
     {% endblock content %}

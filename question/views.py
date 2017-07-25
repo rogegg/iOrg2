@@ -177,18 +177,19 @@ def validate_exam_form(request):
 
         # Ponderamos nota sobre 10
         n_questions = len(response_list)
+        score_bruto = score
         score = (score * 10.0) / (n_questions * score_ok)
 
         # print("Número de preguntas -> ", n_questions)
-        # print("Score bruto         -> ", score)
-        # print("Score sobre 10      -> ", score_t)
+        # print("Score bruto         -> ", score_bruto)
+        # print("Score sobre 10      -> ", score)
         # print("n_questions * score_ok      -> ", n_questions*score_ok)
 
         total_score = {
             "count_ok": count_ok,
             "count_error": count_error,
             "count_no_response": count_no_response,
-            "score": score,
+            "score": round(score,3),
         }
 
         context = {

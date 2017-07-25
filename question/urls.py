@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'vf/question_response$', views.question_response, name='question_response'),
     url(r'exam_type', views.exam_type, name='exam_type'),
     url(r'vf/exam', views.exam_vf, name='exam_vf'),
+    url(r'opm/exam', views.exam_opm, name='exam_opm'),
 ]
 

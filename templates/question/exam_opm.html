@@ -1,26 +1,27 @@
-
-
     {% extends 'index.html' %}
+
+    {% load question_extras  %}
+
     {% block content %}
 
     {% if exam %}
 
-    <h2 class="red-text">Examen vf</h2>
-    <form action="{% url 'exam_vf' %}" method="post" class="iorg-form">{% csrf_token %}
+    <h2 class="red-text">Examen de opción múltiple</h2>
+    <form action="{% url 'exam_opm' %}" method="post" class="iorg-form">{% csrf_token %}
     {% for items in exam %}
         {% with forloop.counter as i %}
 
          {% for question in items.questions %}
             <p>{{ question.name }}</p>
              <input name="question-{{i}}-{{ forloop.counter }}" type="hidden"  value="{{ question.id }}"/>
-             <p>
-                <input name="option-{{ question.id }}" type="radio" id="option-v-{{ question.id }}" value="V"/>
-                <label for="option-v-{{ question.id }}" >Verdadero</label>
-             </p>
-             <p>
-                <input name="option-{{ question.id }}" type="radio" id="option-f-{{ question.id }}" value="F"/>
-                <label for="option-f-{{ question.id }}" >Falso</label>
-             </p>
+             {% for option in question|template_option_list %}
+                 {% with forloop.counter as j %}
+                <p>
+                    <input name="option-{{ question.id }}" type="radio" id="option-{{ question.id }}-{{ j }}" value="{{ option }}"/>
+                    <label for="option-{{ question.id }}-{{ j }}" >{{ option }}</label>
+                 </p>
+                 {% endwith %}
+             {% endfor %}
         {% endfor %}
         {% endwith %}
     {% endfor %}
@@ -31,13 +32,13 @@
 
         {% if response_list %}
             <br>
-            <a href="{% url 'exam_vf' %}" class="btn">Siguiente Examen</a>
+            <a href="{% url 'exam_opm' %}" class="btn">Siguiente Examen</a>
             <br>
             <h3>Total score:</h3>
             <p>Respuestas correctas: {{ total_score.count_ok }}</p>
             <p>Respuestas incorrectas: {{ total_score.count_error }}</p>
             <p>Sin respuesta: {{ total_score.count_no_response }}</p>
-            <h3>Puntuación total: {{ total_score.score }} sobre 10</h3>
+            <h4>Puntuación total: {{ total_score.score }} sobre 10</h4>
 
             {% for response in response_list %}
                 <h3 class="blue-text">Pregunta {{ forloop.counter }}:</h3>
@@ -55,6 +56,6 @@
                     <p>Respuesta incorrecta, opción correcta: {{ response.question.answer }}</p>
                 {% endif %}
             {% endfor %}
-            <a href="{% url 'exam_vf' %}" class="btn">Siguiente Examen</a>
+            <a href="{% url 'exam_opm' %}" class="btn">Siguiente Examen</a>
         {% endif %}
     {% endblock content %}

@@ -108,8 +108,8 @@ def exam_type(request):
     return render(request, 'question/exam_type.html')
 
 
-def generate_exam_vf():
-    question_list = Question.objects.filter(type='vf')
+def generate_exam(exam_type = 'vf'):
+    question_list = Question.objects.filter(type=exam_type)
     topic_list = Topic.objects.all()
     topic_obj = {}
     exam = []
@@ -125,36 +125,36 @@ def generate_exam_vf():
 
     return exam
 
-@login_required()
-def exam_vf(request):
-    exam = {}
-    # Si El formulario está relleno lo procesamos
+
+
+def validate_exam_form(request):
+    context = {}
     if request.method == 'POST':
         print("POST")
         response_list = []
         questions_id_list = []
         options_list = []
-        count_ok = 0            #Número de respuestas correctas
-        count_error = 0         #Número de respuestas incorrectas
-        count_no_response = 0   #nÚmero de respuestas sin responder
-        score = 0               #puntuación total del examen
-        score_ok = 0.5          #puntuación para respuesta correcta
-        score_error = -0.25     #puntuacion para respuesta incorrecta
-        for i in range(1,20):
-            if(request.POST.get("question-" + str(i) + "-1") == None):
+        count_ok = 0  # Número de respuestas correctas
+        count_error = 0  # Número de respuestas incorrectas
+        count_no_response = 0  # nÚmero de respuestas sin responder
+        score = 0  # puntuación total del examen
+        score_ok = 0.5  # puntuación para respuesta correcta
+        score_error = -0.25  # puntuacion para respuesta incorrecta
+        for i in range(1, 20):
+            if (request.POST.get("question-" + str(i) + "-1") == None):
                 break
             question_id_1 = request.POST.get("question-" + str(i) + "-1")
             option_selected_1 = (request.POST.get("option-" + str(question_id_1)))
             question_id_2 = request.POST.get("question-" + str(i) + "-2")
             option_selected_2 = (request.POST.get("option-" + str(question_id_2)))
-            #comprobamos si es respuesta que resta, suma o no influye
-            if(option_selected_1 == None):
-                count_no_response=count_no_response+1
-            elif(Question.objects.get(id=question_id_1).answer == option_selected_1):
-                count_ok = count_ok+1
+            # comprobamos si es respuesta que resta, suma o no influye
+            if (option_selected_1 == None):
+                count_no_response = count_no_response + 1
+            elif (Question.objects.get(id=question_id_1).answer == option_selected_1):
+                count_ok = count_ok + 1
                 score = score + score_ok
             else:
-                count_error = count_error+1
+                count_error = count_error + 1
                 score = score + score_error
 
             if (option_selected_2 == None):
@@ -177,27 +177,59 @@ def exam_vf(request):
 
         # Ponderamos nota sobre 10
         n_questions = len(response_list)
-        score_t = (score * 10.0) / (n_questions * score_ok)
+        score = (score * 10.0) / (n_questions * score_ok)
 
-        print("Número de preguntas -> ", n_questions)
-        print("Score bruto         -> ", score)
-        print("Score sobre 10      -> ", score_t)
-        print("n_questions * score_ok      -> ", n_questions*score_ok)
+        # print("Número de preguntas -> ", n_questions)
+        # print("Score bruto         -> ", score)
+        # print("Score sobre 10      -> ", score_t)
+        # print("n_questions * score_ok      -> ", n_questions*score_ok)
 
-        total_score={
+        total_score = {
             "count_ok": count_ok,
             "count_error": count_error,
-            "count_no_response":count_no_response,
+            "count_no_response": count_no_response,
             "score": score,
         }
 
-        return render(request, 'question/exam_vf.html', {"response_list":response_list,"total_score":total_score})
+        context = {
+            "total_score": total_score,
+            "response_list": response_list,
+        }
+    return context
+
+
+@login_required()
+def exam_vf(request):
+    exam = {}
+    # Si El formulario está relleno lo procesamos
+    if request.method == 'POST':
+        context = validate_exam_form(request)
+        return render(request, 'question/exam_vf.html', context)
     # si el formulario no está relleno , lo generamos
     else:
-        exam = generate_exam_vf()
+        exam = generate_exam('vf')
         return render(request, 'question/exam_vf.html', {"exam":exam})
 
 
+
+@login_required()
+def exam_opm(request):
+    exam = {}
+    # Si El formulario está relleno lo procesamos
+    if request.method == 'POST':
+        context = validate_exam_form(request)
+        return render(request, 'question/exam_opm.html', context)
+    # si el formulario no está relleno , lo generamos
+    else:
+        exam = generate_exam('opm')
+
+        for item in exam:
+            print(item["questions"])
+
+
+
+
+        return render(request, 'question/exam_opm.html', {"exam":exam})
 
 
 

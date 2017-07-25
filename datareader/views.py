@@ -77,22 +77,32 @@ def admin_site(request):
 
 @login_required()
 def update_concepts(request):
-    global LOCK
-    if not LOCK:
-        LOCK = True
-        populate_concept_page()
-        LOCK = False
-    return render(request, 'user/admin_site.html',{"status_concepts":True})
+    user = request.user
+    permission_len = len(Permission.objects.filter(user=user).filter(codename="add_concept"))
+    if permission_len>0:
+        global LOCK
+        if not LOCK:
+            LOCK = True
+            populate_concept_page()
+            LOCK = False
+        return render(request, 'user/admin_site.html',{"status_concepts":True})
+    else:
+        return redirect('index')
 
 
 @login_required()
 def update_questions_vf(request):
-    global LOCK
-    if not LOCK:
-        LOCK = True
-        populate_questions("vf")
-        LOCK = False
-    return render(request, 'user/admin_site.html',{"status_questions_vf":True})
+    user = request.user
+    permission_len = len(Permission.objects.filter(user=user).filter(codename="add_concept"))
+    if permission_len>0:
+        global LOCK
+        if not LOCK:
+            LOCK = True
+            populate_questions("vf")
+            LOCK = False
+        return render(request, 'user/admin_site.html',{"status_questions_vf":True})
+    else:
+        return redirect('index')
 
 
 @login_required()

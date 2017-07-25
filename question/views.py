@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from datareader.models import Topic,Question
 from .models import AnswerForm
@@ -100,4 +101,95 @@ def question_response(request):
         return render(request, 'question/test_form.html', {"message":request.POST.get("options")} )
 
     return render(request, 'question/test_form.html',{"message":"NO POST"})
+
+
+
+def generate_exam_vf():
+    question_list = Question.objects.filter(type='vf')
+    topic_list = Topic.objects.all()
+    topic_obj = {}
+    exam = []
+    for topic in topic_list:
+        questions_topic = question_list.filter(topic = topic)
+        if(len(list(questions_topic)) > 0 and topic.name!="Introducción"):
+            #quedarse con 2 preguntas de cada tema
+            topic_obj[topic.name] = questions_topic.order_by('?')[:2]
+            exam.append({
+                "topic": topic.name,
+                "questions": list(questions_topic.order_by('?')[:2]),
+            })
+
+    return exam
+
+@login_required()
+def exam_vf(request):
+    exam = {}
+    # Si El formulario está relleno lo procesamos
+    if request.method == 'POST':
+        print("POST")
+        response_list = []
+        questions_id_list = []
+        options_list = []
+        score1 = 0
+        score2 = 0
+        count_ok = 0 #Número de respuestas correctas
+        count_error = 0 #Número de respuestas incorrectas
+        count_no_response = 0 #nÚmero de respuestas sin responder
+        score = 0
+        for i in range(1,20):
+            if(request.POST.get("question-" + str(i) + "-1") == None):
+                break
+            question_id_1 = request.POST.get("question-" + str(i) + "-1")
+            option_selected_1 = (request.POST.get("option-" + str(question_id_1)))
+            question_id_2 = request.POST.get("question-" + str(i) + "-2")
+            option_selected_2 = (request.POST.get("option-" + str(question_id_2)))
+            #comprobamos si es respuesta que resta, suma o no influye
+            if(option_selected_1 == None):
+                score1 = 0
+                count_no_response=count_no_response+1
+            elif(Question.objects.get(id=question_id_1).answer == option_selected_1):
+                score1 = 0.25
+                count_ok = count_ok+1
+            else:
+                score1 = -0.25
+                count_error = count_error+1
+
+            if (option_selected_2 == None):
+                score2 = 0
+                count_no_response = count_no_response + 1
+            elif (Question.objects.get(id=question_id_2).answer == option_selected_2):
+                score2 = 0.25
+                count_ok = count_ok + 1
+            else:
+                score2 = -0.25
+                count_error = count_error + 1
+
+            response_list.append({
+                "question": Question.objects.get(id=question_id_1),
+                "option_selected": option_selected_1,
+                "score": score1
+            })
+            response_list.append({
+                "question": Question.objects.get(id=question_id_2),
+                "option_selected": option_selected_2,
+                "score": score2
+            })
+
+        score = (count_ok*0.25) - (count_error*0.25)
+        total_score={
+            "count_ok": count_ok,
+            "count_error": count_error,
+            "count_no_response":count_no_response,
+            "score": score,
+        }
+
+        return render(request, 'question/exam_vf.html', {"response_list":response_list,"total_score":total_score})
+    # si el formulario no está relleno , lo generamos
+    else:
+        exam = generate_exam_vf()
+        return render(request, 'question/exam_vf.html', {"exam":exam})
+
+
+
+
 

@@ -1,6 +1,7 @@
     {% extends 'index.html' %}
     {% block content %}
         <div class="admin-site-container">
+
             <div class="settings-button-container">
                 <a href="{% url 'update_concepts' %}" class="btn">Actualizar Conceptos</a>
                 {% if status_concepts %}

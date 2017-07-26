@@ -8,6 +8,9 @@ main,
 footer {
   padding-left: 200px;
 }
+.main-container {
+  padding-top: 20px;
+}
 .lateral-nav-wrapper {
   width: 200px;
 }
@@ -19,6 +22,9 @@ footer {
 .lateral-nav-wrapper .logo-container img {
   max-width: 100%;
   max-height: 100%;
+}
+.inline-text {
+  display: inline-block;
 }
 .admin-site-container .settings-button-container .button-description {
   opacity: 0;

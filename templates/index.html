@@ -43,18 +43,23 @@
             </li>
             <li><a href="{% url 'concept' %}" class="">Conceptos</a></li>
             <li><a href="{% url 'autoevaluacion' %}" class="">Autoevaluación</a></li>
-            <li><a href="{% url 'index' %}" class="">Hexágono</a></li>
+{#            <li><a href="{% url 'index' %}" class="">Hexágono</a></li>#}
             <li><a href="{% url 'exam_type' %}" class="">Examen</a></li>
         </ul>
 
     <main class="main-container">
         <div class="container">
             {% block content %}
+                <br>
+                <h3 class="light-blue-text inline-text">Bienvenido a</h3>
+                <h2 class="blue-text text-darken-1 inline-text">&nbspiOrg2.0</h2>
+                <h5 class="blue-grey-text">Plataforma de apoyo a la docencia de la asignatura Organización de Empresas.</h5>
+                <br>
                 {% if user.is_authenticated %}
-                    <p>Welcome {{ user.username }}</p>
+                    <p class="blue-grey-text">Hola <span class="red-text text">{{ user.username }}</span>, selecciona una opción del menú lateral</p>
                 {% else %}
-                    <a href="{% url 'login' %}">Login</a>
-                    <a href="{% url 'signup' %}">Register</a>
+                    <a href="{% url 'login' %} " class="btn">Login</a>
+                    <a href="{% url 'signup' %}" class="btn">Register</a>
                 {% endif %}
             {% endblock %}
         </div>

@@ -2,7 +2,8 @@
 
     {% extends 'index.html' %}
     {% block content %}
-        <br><br>
+
         <a href="{% url 'exam_vf' %}" class="waves-effect waves-light btn">Examen Preguntas Verdadero Falso</a>
+        <br><br>
         <a href="{% url 'exam_opm' %}" class="waves-effect waves-light btn">Examen Preguntas Opción Múltiple</a>
     {% endblock content %}

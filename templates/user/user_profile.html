@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+
+    <h3 class="blue-text">Perfil de usuario:</h3>
+
+    <div class="row">
+        <div class="col"><p class="blue-text">Usuario:</p></div>
+        <div class="col"><p>{{ user.username }}</p></div>
+    </div>
+{% if user.first_name|length > 0 %}
+    <div class="row">
+        <div class="col"><p class="blue-text">Nombre:</p></div>
+        <div class="col"><p>{{ user.first_name }}</p></div>
+    </div>
+{% endif %}
+{% if user.last_name|length > 0 %}
+    <div class="row">
+        <div class="col"><p class="blue-text">Apellido:</p></div>
+        <div class="col"><p>{{ user.last_name }}</p></div>
+    </div>
+{% endif %}
+{% if user.email|length > 0 %}
+    <div class="row">
+        <div class="col"><p class="blue-text">Email:</p></div>
+        <div class="col"><p>{{ user.email }}</p></div>
+    </div>
+{% endif %}
+    <br><br>
+    <h3 class="blue-text inline-text">Estadísticas de usuario:</h3>
+    <div class="row">
+        <div class="col"><p class="blue-text">Preguntas correctas:</p></div>
+        <div class="col"><p>{{ user.stats.count_questions_ok }}</p></div>
+    </div>
+    <div class="row">
+        <div class="col"><p class="blue-text">Preguntas incorrectas:</p></div>
+        <div class="col"><p>{{ user.stats.count_questions_fail }}</p></div>
+    </div>
+    <div class="row">
+        <div class="col"><p class="blue-text">Exámenes aprobados:</p></div>
+        <div class="col"><p>{{ user.stats.count_exams_pass }}</p></div>
+    </div>
+    <div class="row">
+        <div class="col"><p class="blue-text">Exámenes suspensos:</p></div>
+        <div class="col"><p>{{ user.stats.count_exams_fail }}</p></div>
+    </div>
+    <div class="row">
+        <div class="col"><p class="blue-text">Nota media de los exámenes aprobados:</p></div>
+        <div class="col"><p>{{ exam_score.pass_average }}</p></div>
+    </div>
+    <div class="row">
+        <div class="col"><p class="blue-text">Nota media de los exámenes suspensos:</p></div>
+        <div class="col"><p>{{ exam_score.fail_average }}</p></div>
+    </div>
+    <div class="row">
+        <div class="col"><p class="blue-text">Nota media de los exámenes:</p></div>
+        <div class="col"><h3>{{ exam_score.total }}</h3></div>
+    </div>
+{% endif %}
+{% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render_to_response
+from decimal import *
 from django.template.context import RequestContext
 
 from django.contrib.auth.decorators import login_required
@@ -57,9 +58,25 @@ def signup(request):
 
 @login_required()
 def index(request):
-    return render(request, 'index.html', {'user': request.user})
+    return render(request, 'index.html', {'user':request.user})
 
 # @login_required()
 # def logout_view(request):
 #     # logout(request)
 #     return HttpResponseRedirect('/datareader')
+
+
+@login_required()
+def profile(request):
+    user = request.user
+    getcontext().prec = 4#Precisión para Decimal()
+
+    pass_average = user.stats.exam_pass_total_score/user.stats.count_exams_pass
+    fail_average = user.stats.exam_fail_total_score/user.stats.count_exams_fail
+
+    exam_score = {
+        "pass_average": pass_average,
+        "fail_average": fail_average,
+        "total": (pass_average+fail_average)/2,
+    }
+    return render(request, 'user/user_profile.html', {'user':user , 'exam_score':exam_score})

@@ -26,7 +26,7 @@
                         <li><a href="{% url 'admin_site' %}"><i class="material-icons left">supervisor_account</i>Admin site</a></li>
                     {% endif %}
                     {% if user.is_authenticated %}
-                        <li><a href="#"><i class="material-icons left">edit</i>Profile</a></li>
+                        <li><a href="{% url 'profile' %}"><i class="material-icons left">edit</i>Profile</a></li>
                         <li><a href="{% url 'logout' %}"><i class="material-icons left">power_settings_new</i>Logout</a></li>
                     {% endif %}
                     </ul>

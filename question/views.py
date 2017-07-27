@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from datareader.models import Topic,Question
 from .models import AnswerForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from stats.models import Stats
 from django.db import models, migrations
 
 import random
@@ -76,8 +78,19 @@ def single_question(request):
         option_select = request.POST.get("options")
         question = Question.objects.get(name=request.POST.get("question"))
         response = False # Respuesta falsa
+        user_stats = User.objects.get(username=request.user).stats
+        print("User stats", user_stats.count_questions_ok)
+
         if option_select == question.answer:
-            response = True #Respuesta correcta
+            # Respuesta correcta, actualizamos sus estadísticas
+            response = True
+            user_stats.count_questions_ok += 1
+        else:
+            #Respuesta incorrecta, actualizamos sus estadísticas
+            response = False
+            user_stats.count_questions_fail += 1
+        #Guardamos las estadísticas
+        user_stats.save()
 
         context_response = {
             "question": question,

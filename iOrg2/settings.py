@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'datareader.apps.DatareaderConfig',
     'question.apps.QuestionConfig',
     'user.apps.UserConfig',
+    'stats.apps.StatsConfig'
 ]
 
 

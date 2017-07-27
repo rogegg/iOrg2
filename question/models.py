@@ -7,7 +7,6 @@ class AnswerForm(forms.Form):
     options = forms.ChoiceField(widget=forms.RadioSelect(attrs={'class':'iorg-input'}),
                                 choices=choices, initial='V', label='')
 
-
     def create_form(q):
         option_list = q.get_option_list()
         new_list = []

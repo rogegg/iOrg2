@@ -79,4 +79,14 @@ def profile(request):
         "fail_average": fail_average,
         "total": (pass_average+fail_average)/2,
     }
-    return render(request, 'user/user_profile.html', {'user':user , 'exam_score':exam_score})
+    exams_chart = [
+        ['exams_pass', user.stats.count_exams_pass],
+        ['exams_fail', user.stats.count_exams_fail],
+    ]
+    questions_chart = [
+        ['questions_ok', user.stats.count_questions_ok],
+        ['questions_fail', user.stats.count_questions_fail],
+    ]
+    return render(request, 'user/user_profile.html',
+                  {'user':user , 'exam_score':exam_score,
+                   'exams_chart':exams_chart, 'questions_chart':questions_chart})

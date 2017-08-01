@@ -4,6 +4,16 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+    {% if perms.datareader.add_concept %}
+
+        <div class="row">
+            <div class="col">
+                <a href="{% url 'search_profile' %}" class="btn">Perfiles de alumnos</a>
+            </div>
+        </div>
+
+    {% endif %}
+{% block user_stats %}
 
     <h3 class="blue-text">Perfil de usuario:</h3>
 
@@ -119,6 +129,6 @@
         {% graph "questions-chart" "out_data_questions" "out_options_questions" %}
 
     {% endgooglecharts %}
-
+{% endblock %}
 {% endif %}
 {% endblock %}

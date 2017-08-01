@@ -68,7 +68,6 @@ class Question(models.Model):
         default="vf"
     )
 
-
     def get_all(self):
         return Question.objects.all()
 
@@ -88,7 +87,6 @@ class Question(models.Model):
         if (options[0] == "V" or options[0] == "F"):
             return "true_false"
         return "multiple_options"
-
 
 
 

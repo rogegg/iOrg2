@@ -1,0 +1,121 @@
+{% extends 'user/user_profile.html' %}
+
+{% load googlecharts %}
+
+{% block user_stats %}
+
+{% if user.is_authenticated and perms.datareader.add_concept%}
+    <div class="row">
+        <div class="col"><p class="blue-text">Usuario:</p></div>
+        <div class="col"><p>{{ user_selected.username }}</p></div>
+    </div>
+    {% if user_selected.first_name|length > 0 %}
+        <div class="row">
+            <div class="col"><p class="blue-text">Nombre:</p></div>
+            <div class="col"><p>{{ user_selected.first_name }}</p></div>
+        </div>
+    {% endif %}
+    {% if user_selected.last_name|length > 0 %}
+        <div class="row">
+            <div class="col"><p class="blue-text">Apellido:</p></div>
+            <div class="col"><p>{{ user_selected.last_name }}</p></div>
+        </div>
+    {% endif %}
+    {% if user_selected.email|length > 0 %}
+        <div class="row">
+            <div class="col"><p class="blue-text">Email:</p></div>
+            <div class="col"><p>{{ user_selected.email }}</p></div>
+        </div>
+    {% endif %}
+        <br><br>
+        <h3 class="blue-text inline-text">Estadísticas de usuario:</h3>
+        <div class="row">
+            <div class="col s4">
+                <div class="row">
+                    <div class="col"><p class="blue-text">Preguntas correctas:</p></div>
+                    <div class="col"><p>{{ user_selected.stats.count_questions_ok }}</p></div>
+                </div>
+                <div class="row">
+                    <div class="col"><p class="blue-text">Preguntas incorrectas:</p></div>
+                    <div class="col"><p>{{ user_selected.stats.count_questions_fail }}</p></div>
+                </div>
+            </div>
+            <div class="col s6">
+                <div id="questions-chart"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s4">
+                <div class="row">
+                    <div class="col"><p class="blue-text">Exámenes aprobados:</p></div>
+                    <div class="col"><p>{{ user_selected.stats.count_exams_pass }}</p></div>
+                </div>
+                <div class="row">
+                    <div class="col"><p class="blue-text">Exámenes suspensos:</p></div>
+                    <div class="col"><p>{{ user_selected.stats.count_exams_fail }}</p></div>
+                </div>
+            </div>
+            <div class="col s6">
+                <div id="exams-chart"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <div class="col"><p class="blue-text">Nota media de los exámenes aprobados:</p></div>
+                <div class="col"><p>{{ exam_score.pass_average }}</p></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <div class="col"><p class="blue-text">Nota media de los exámenes suspensos:</p></div>
+                <div class="col"><p>{{ exam_score.fail_average }}</p></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <div class="col"><p class="blue-text">Nota media de los exámenes:</p></div>
+                <div class="col"><h3>{{ exam_score.total }}</h3></div>
+            </div>
+        </div>
+
+        {% googlecharts %}
+            exams_pass = "Aprobados"
+            exams_fail = "Suspensos"
+            questions_ok = "Correctas"
+            questions_fail = "Incorrectas"
+
+            {% data exams_chart "out_data_exams" %}
+                {% col "string" "Name" %} {{ val }}{% endcol %}
+                {% col "number" "Value" %}{{ val }}{% endcol %}
+            {% enddata %}
+
+             {% data questions_chart "out_data_questions" %}
+                {% col "string" "Name" %} {{ val }}{% endcol %}
+                {% col "number" "Value" %}{{ val }}{% endcol %}
+            {% enddata %}
+
+            {% options "out_options_exams" %}
+                kind: "PieChart",
+                options:{
+                    title: "Exámenes aprobados/suspensos",
+                    width: 500,
+                    height: 240,
+                }
+            {% endoptions %}
+
+            {% options "out_options_questions" %}
+                kind: "PieChart",
+                options:{
+                    title: "Preguntas correctas/incorrectas",
+                    width: 500,
+                    height: 240,
+                }
+            {% endoptions %}
+
+            {% graph "exams-chart" "out_data_exams" "out_options_exams" %}
+            {% graph "questions-chart" "out_data_questions" "out_options_questions" %}
+
+        {% endgooglecharts %}
+    {% endif %}
+{% endblock %}

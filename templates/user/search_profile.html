@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+{% load googlecharts %}
+
+{% block content %}
+{% if user.is_authenticated %}
+{#    Search list   #}
+<div class="row">
+    <div class="col s6">
+        <h4 class="blue-text">Perfiles de alumnos: </h4>
+        <div class="collection">
+            {% for user in user_list %}
+                {% if user != request.user and user.username != "admin" %}
+                    <a href="{% url 'search_profile' %}?user={{ user.username }}" class="collection-item">{{ user.username }}</a>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

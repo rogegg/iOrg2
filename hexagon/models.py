@@ -23,7 +23,7 @@ class HexagonOption(models.Model):
 
 
 def populate_hexagon_questions():
-    # Conectamos con la plantilla de Google Drive
+    # Conectamos con la plantilla de Google D                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               rive
     scope = ['https://spreadsheets.google.com/feeds']
     credentials = ServiceAccountCredentials.from_json_keyfile_name('iOrgTest-5fa50b4936cd.json', scope)
     gc = gspread.authorize(credentials)

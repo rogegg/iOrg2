@@ -5,9 +5,9 @@
         <br>
         <h5> {{ question.name }} </h5>
         {% if response %}
-           <h4>Respuesta Correcta</h4>
+           <h4 class="green-text">Respuesta Correcta</h4>
         {% else %}
-            <h4>Respuesta Incorrecta</h4>
+            <h4 class="red-text">Respuesta Incorrecta</h4>
         {% endif %}
          {% if question.reason != "" %}
             <h5>Explicación:</h5>
@@ -15,6 +15,7 @@
         {% endif %}
         <br>
         <a href="{{ request.get_full_path }}" class="waves-effect waves-light btn">Siguiente Pregunta</a>
+        <br>
         <br>
         {% if type == "vf" %}
             <a href="{% url 'vf' %}" class="waves-effect waves-light btn">Lista temas</a>

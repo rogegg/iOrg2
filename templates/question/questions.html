@@ -4,15 +4,20 @@
     {% block content %}
 
     <h1 class="blue-text darken-4">Temas</h1>
+    <div class="collection">
         {% if type == "vf" %}
 
             {% for topic in topic_list %}
-                <a href="{% url 'vf_single' %}?topic={{ topic.name }}&type={{ type }} "><h4>{{ topic.name }}</h4></a>
+                <a href="{% url 'vf_single' %}?topic={{ topic.name }}&type={{ type }}" class="collection-item">{{ topic.name }}</a>
             {% endfor %}
+
+
+
         {% elif type == "opm" %}
             {% for topic in topic_list %}
-                <a href="{% url 'opm_single' %}?topic={{ topic.name }}&type={{ type }} "><h4>{{ topic.name }}</h4></a>
+                <a href="{% url 'opm_single' %}?topic={{ topic.name }}&type={{ type }}" class="collection-item">{{ topic.name }}</a>
             {% endfor %}
         {% endif %}
 
+    </div>
     {% endblock content %}
